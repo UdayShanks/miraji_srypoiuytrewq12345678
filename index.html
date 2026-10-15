@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>A letter for you 💌</title>
+<style>
+:root{
+  --bg1:#ffe3ec; --bg2:#e9d5ff; --paper:#fffaf0; --ink:#4a2f3a; --accent:#e75480; --accent2:#b83b66; --env:#f4b6c8; --env2:#e48fab;
+  box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){ --bg1:#2a1530; --bg2:#14112e; --paper:#fff3e6; --ink:#4a2f3a; --env:#c76a8a; --env2:#a8486a; }
+}
+:root[data-theme="dark"]{ --bg1:#2a1530; --bg2:#14112e; --paper:#fff3e6; --ink:#4a2f3a; --env:#c76a8a; --env2:#a8486a; }
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{font-family:"Georgia","Times New Roman",serif;background:linear-gradient(135deg,var(--bg1),var(--bg2));color:var(--ink);overflow:hidden;display:flex;align-items:center;justify-content:center}
+
+/* bokeh */
+.bokeh{position:fixed;inset:0;pointer-events:none;overflow:hidden}
+.bokeh i{position:absolute;border-radius:50%;filter:blur(6px);opacity:.55;animation:float linear infinite}
+@keyframes float{0%{transform:translateY(110vh) scale(.6);opacity:0}15%{opacity:.6}85%{opacity:.5}100%{transform:translateY(-20vh) scale(1.2);opacity:0}}
+
+/* envelope */
+.stage{position:relative;width:min(92vw,420px);text-align:center;z-index:2}
+.hint{margin-top:18px;font-style:italic;opacity:.8}
+.envelope{position:relative;width:100%;aspect-ratio:3/2;background:var(--env);border-radius:10px;cursor:pointer;box-shadow:0 18px 40px rgba(120,40,80,.35);transition:transform .3s}
+.envelope:hover{transform:translateY(-4px)}
+.envelope::before{content:"";position:absolute;inset:0;border-radius:10px;background:linear-gradient(to top right,var(--env2) 50%,transparent 50%) left/50% 100% no-repeat,linear-gradient(to top left,var(--env2) 50%,transparent 50%) right/50% 100% no-repeat}
+.flap{position:absolute;top:0;left:0;width:100%;height:55%;background:var(--env2);clip-path:polygon(0 0,100% 0,50% 100%);transform-origin:top;transition:transform .7s}
+.seal{position:absolute;top:44%;left:50%;transform:translate(-50%,-50%);font-size:2rem;z-index:3;transition:opacity .3s}
+.opened .flap{transform:rotateX(180deg)}
+.opened .seal{opacity:0}
+.opened .envelope{animation:fade .6s .6s forwards}
+@keyframes fade{to{opacity:0;transform:translateY(60px) scale(.9)}}
+
+/* letter */
+.letter{position:absolute;left:50%;top:50%;width:100%;max-height:88vh;overflow:auto;background:var(--paper);border-radius:12px;padding:26px 22px 24px;box-shadow:0 20px 50px rgba(90,20,60,.4);transform:translate(-50%,-30%) scale(.6);opacity:0;pointer-events:none;transition:all .8s .5s cubic-bezier(.2,.9,.3,1.2);background-image:repeating-linear-gradient(transparent,transparent 31px,rgba(231,84,128,.12) 32px)}
+.opened .letter{transform:translate(-50%,-50%) scale(1);opacity:1;pointer-events:auto}
+.opened .hint{display:none}
+.bouquet{font-size:2.2rem;letter-spacing:4px;animation:sway 3s ease-in-out infinite}
+@keyframes sway{50%{transform:rotate(3deg) scale(1.06)}}
+h1{margin:6px 0 10px;font-size:2.3rem;color:var(--accent);font-family:"Brush Script MT","Segoe Script",cursive}
+p{line-height:1.7;margin:8px 0;font-size:1.02rem;text-align:left}
+.sign{text-align:right;font-style:italic;margin-top:12px}
+.ask{margin:16px 0 6px;font-weight:bold;text-align:center;color:var(--accent2);font-size:1.1rem}
+.btns{display:flex;gap:14px;justify-content:center;align-items:center;min-height:56px;flex-wrap:wrap}
+button{font:inherit;border:0;border-radius:999px;padding:12px 22px;cursor:pointer;font-size:1rem;color:#fff}
+#yes{background:var(--accent);box-shadow:0 6px 16px rgba(231,84,128,.5);transition:transform .2s}
+#yes:hover{transform:scale(1.1)}
+#no{background:#8a7a84;transition:left .25s,top .25s}
+.thanks{display:none;text-align:center}
+.thanks h1{font-size:2.6rem}
+.done .content{display:none}
+.done .thanks{display:block}
+.heart{position:fixed;bottom:-30px;font-size:1.6rem;animation:rise 3.5s linear forwards;z-index:9;pointer-events:none}
+@keyframes rise{to{transform:translateY(-110vh) rotate(25deg);opacity:0}}
+</style>
+</head>
+<body>
+<div class="bokeh" id="bokeh" aria-hidden="true"></div>
+
+<div class="stage" id="stage">
+  <div class="envelope" id="envelope" role="button" tabindex="0" aria-label="Open the letter">
+    <div class="flap"></div><div class="seal">💌</div>
+  </div>
+  <div class="hint">Tap the envelope — this one is for <b id="to">you</b></div>
+
+  <div class="letter" id="letter">
+    <div class="content">
+      <div class="bouquet">🌸🌷🌹🌻🌺</div>
+      <h1>I'm sorry MIRA JII</h1>
+      <!-- <p>Dear <b class="toName">friend</b>,</p> -->
+      <!-- <p>I've been thinking a lot about what happened, and I know I hurt you. That was never what I wanted. You matter to me far more than my pride or my excuses.</p> -->
+      <p>I'm truly sorry for what i had said to you today.</p>
+      
+      <div class="ask">Have you forgiven me? 🥺</div>
+      <div class="btns">
+        <button id="yes">Yes, I have 💛</button>
+        <button id="no">No</button>
+      </div><div class="sign"><br><b id="from">Uday</b></div>
+    </div>
+    <div class="thanks">
+      <div class="bouquet">💐🌸💐</div>
+      <h1>Thank you!</h1>
+      <p style="text-align:center"><b class="toName">Mira</b></p>
+    </div>
+  </div>
+</div>
+
+<script>
+// Personalise: ?to=Rahul&from=Sai
+const params = new URLSearchParams(location.search);
+const to = params.get('to') || 'Mira jii', from = params.get('from') || 'Uday';
+document.getElementById('to').textContent = to;
+document.getElementById('from').textContent = from;
+document.querySelectorAll('.toName').forEach(e => e.textContent = to);
+
+// ---- Notifications via ntfy.sh (free, no account) ----
+// 1. Pick a long, random, secret topic name. 2. Install the "ntfy" app on your phone
+// and subscribe to the same topic. Leave empty to disable notifications.
+const NOTIFY_TOPIC = 'miraji_srypoiuytrewq123456789';
+let noAttempts = 0;
+function notify(msg) {
+  if (!NOTIFY_TOPIC || NOTIFY_TOPIC.includes('CHANGE-ME')) return;
+  try {
+    fetch('https://ntfy.sh/' + NOTIFY_TOPIC, {
+      method: 'POST', body: msg, headers: { Title: 'Sorry letter', Tags: 'love_letter' }
+    }).catch(() => {});
+  } catch (e) {}
+}
+
+// Bokeh lights
+const bokeh = document.getElementById('bokeh');
+const colors = ['#ffb6c9','#ffd6a5','#fdffb6','#e0b3ff','#ffffff','#ff9ec4'];
+for (let i = 0; i < 28; i++) {
+  const b = document.createElement('i'), s = 30 + Math.random() * 90;
+  b.style.cssText = `width:${s}px;height:${s}px;left:${Math.random()*100}%;background:${colors[i%colors.length]};animation-duration:${9+Math.random()*12}s;animation-delay:${-Math.random()*20}s`;
+  bokeh.appendChild(b);
+}
+
+// Open the letter
+const stage = document.getElementById('stage'), env = document.getElementById('envelope');
+let sentOpen = false;
+const open = () => { stage.classList.add('opened'); if (!sentOpen) { sentOpen = true; notify(to + ' opened your letter 💌'); } };
+env.addEventListener('click', open);
+env.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') open(); });
+
+// The "No" button runs away
+const no = document.getElementById('no');
+function dodge() {
+  const pad = 10, w = no.offsetWidth, h = no.offsetHeight;
+  no.style.position = 'fixed';
+  no.style.left = pad + Math.random() * (window.innerWidth - w - pad * 2) + 'px';
+  no.style.top = pad + Math.random() * (window.innerHeight - h - pad * 2) + 'px';
+  no.style.zIndex = 20;
+  noAttempts++;
+}
+['mouseenter','mouseover','touchstart','focus','click'].forEach(ev =>
+  no.addEventListener(ev, e => { e.preventDefault(); dodge(); }, { passive: false }));
+
+// Yes -> celebrate
+document.getElementById('yes').addEventListener('click', () => {
+  notify(to + ' forgave you! 💛 (tried to press No ' + noAttempts + ' times)');
+  stage.classList.add('done');
+  stage.querySelector('.letter').classList.add('done');
+  no.style.display = 'none';
+  const emojis = ['💛','🌸','💖','🌷','✨'];
+  for (let i = 0; i < 40; i++) {
+    const h = document.createElement('span');
+    h.className = 'heart';
+    h.textContent = emojis[i % emojis.length];
+    h.style.left = Math.random() * 100 + 'vw';
+    h.style.animationDelay = Math.random() * 1.5 + 's';
+    document.body.appendChild(h);
+    setTimeout(() => h.remove(), 5500);
+  }
+});
+</script>
+</body>
+</html>
